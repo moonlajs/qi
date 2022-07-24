@@ -59,28 +59,123 @@ function AnimateBaseFrequency() {
 }
 
 window.requestAnimationFrame(AnimateBaseFrequency);</script>
+<script>
+fetch('https://express-7t18-1376-4-1313040537.sh.run.tcloudbase.com/')
+.then(r => r.json()).then(function(res){
+console.log('1111111111111111111',res)
+})
 
+</script>
 
 <script src="./jweixin-1.6.0.js"></script>
+
+
+<script>
+
+
+function getToken(){
+
+//获取access_token
+fetch('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx1947f0421326df29&secret=71ab3686cd3f5c9256cde0bdd41f30a7')
+.then(r => r.json()).then(function(res){
+console.log('access_token-------',res)
+// 59_B54V5ZSbZJZWYqxsbhdY-PJMq4dfEpKihb6gcjEL9L87yhEoL-72aMeyDxXC45Ume2XmDSR06xejYHMVYybvkVnvaZ1bsE_4tCscdUjukuwlGj6bWK80XOxHND4Q3dg7dXRhywDFTp0Prst0MUPgADAYGB
+	if(res.access_token){
+		sessionstorage.setItem('access_token',res.access_token);
+		if(self){
+			self.__access_token = res.access_token
+		}
+		// https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=59_B54V5ZSbZJZWYqxsbhdY-PJMq4dfEpKihb6gcjEL9L87yhEoL-72aMeyDxXC45Ume2XmDSR06xejYHMVYybvkVnvaZ1bsE_4tCscdUjukuwlGj6bWK80XOxHND4Q3dg7dXRhywDFTp0Prst0MUPgADAYGB&type=jsapi
+		let url  = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+ res.access_token +'&type=jsapi' 
+		fetch(url)
+		.then(r => r.json()).then(function(result){
+			console.log('jsapi_ticket-------',result.ticket)
+			//O3SMpm8bG7kJnF36aXbe8_MztFNXyAu95i2ZNjoDvQ2tMmi6f3LN_5HRwdmgs5lehUoyHKe_8kilFxswHubI0A
+		})
+		
+	}
+})
+}
+
+
+
+</script>
 <script>
 // Date.now()
+// jsapi_ticket : O3SMpm8bG7kJnF36aXbe8_MztFNXyAu95i2ZNjoDvQ2tMmi6f3LN_5HRwdmgs5lehUoyHKe_8kilFxswHubI0A
+// https://moonlajs.github.io/qi/blueMoon.html
+
+// 生成签名的地址： https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign
 wx.config({
   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
   appId: 'wx1947f0421326df29', // 必填，公众号的唯一标识
-  timestamp: '1658632811343' ||Date.now(), // 必填，生成签名的时间戳
-  nonceStr: '56474567456745', // 必填，生成签名的随机串
-  signature: '',// 必填，签名
-  jsApiList: [] // 必填，需要使用的JS接口列表
+  timestamp: '1658671848583' ||Date.now(), // 必填，生成签名的时间戳
+  nonceStr: '3a2682cbc51', // 必填，生成签名的随机串
+  signature: '6ed061b1d386fb70deb09cc756c97b3b13d291ba',// 必填，签名
+  jsApiList: [
+  
+'updateAppMessageShareData',
+'updateTimelineShareData',
+
+//onMenuShareTimeline（即将废弃）
+
+//onMenuShareAppMessage（即将废弃）
+
+//onMenuShareQQ（即将废弃）
+
+'onMenuShareWeibo',
+'onMenuShareQZone',
+'startRecord',
+'stopRecord',
+'onVoiceRecordEnd',
+'playVoice',
+'pauseVoice',
+'stopVoice',
+'onVoicePlayEnd',
+'uploadVoice',
+'downloadVoice',
+'chooseImage',
+'previewImage',
+'uploadImage',
+'downloadImage',
+'translateVoice',
+'getNetworkType',
+'openLocation',
+'getLocation',
+'hideOptionMenu',
+'showOptionMenu',
+'hideMenuItems',
+'showMenuItems',
+'hideAllNonBaseMenuItem',
+'showAllNonBaseMenuItem',
+'closeWindow',
+'scanQRCode',
+'chooseWXPay',
+'openProductSpecificView',
+'addCard',
+'chooseCard',
+'openCard'
+  ] // 必填，需要使用的JS接口列表
+  
 });
 
 
-wx.ready(function(){
+wx.ready(function(data){
   // config信息验证后会执行 ready 方法，所有接口调用都必须在 config 接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在 ready 函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在 ready 函数中。
+
+
+
+console.log('22222222222222',data)
 })
 
 
 wx.error(function(res){
   // config信息验证失败会执行 error 函数，如签名过期导致验证失败，具体错误信息可以打开 config 的debug模式查看，也可以在返回的 res 参数中查看，对于 SPA 可以在这里更新签名。
+
+
+
+console.log('33333333',res)
+
 });
 </script>
 
