@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一模二模资源</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 32px; color: #1a365d; margin-bottom: 12px; font-weight: 700; }
+        header p { color: #666; font-size: 16px; }
+        header .tip { margin-top: 15px; font-size: 14px; color: #3b82f6; background: #eff6ff; display: inline-block; padding: 6px 16px; border-radius: 20px; }
+        
+        .section { margin-bottom: 25px; }
+        .section-title {
+            background: rgba(255,255,255,0.95);
+            padding: 15px 24px;
+            border-radius: 12px 12px 0 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a365d;
+            border-bottom: 2px solid #3b82f6;
+        }
+        .section-title span { font-size: 14px; font-weight: normal; color: #999; margin-left: 10px; }
+        
+        .paper-list {
+            background: rgba(255,255,255,0.95);
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+        }
+        .paper-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+        .paper-item:last-child { border-bottom: none; }
+        .paper-item:hover { background: #f8fafc; }
+        .paper-name { font-size: 15px; color: #333; }
+        .paper-name small { color: #999; font-size: 12px; margin-left: 8px; }
+        .download-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .download-btn:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .modal h2 { font-size: 20px; color: #1a365d; margin-bottom: 8px; }
+        .modal-price { font-size: 36px; color: #e53e3e; font-weight: bold; margin: 15px 0; }
+        .modal-price span { font-size: 16px; color: #666; font-weight: normal; }
+        .qrcode-section { margin: 25px 0; }
+        .qrcode-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .qrcode-tab {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .qrcode-tab.active {
+            background: #3b82f6;
+            color: #fff;
+            border-color: #3b82f6;
+        }
+        .qrcode-img {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            margin: 0 auto;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .qrcode-img img { width: 100%; height: 100%; object-fit: cover; }
+        .paid-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            border: none;
+            padding: 14px 50px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .paid-btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+        }
+        .download-section {
+            display: none;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .download-section.active { display: block; }
+        .download-link {
+            display: block;
+            background: #eff6ff;
+            color: #3b82f6;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            word-break: break-all;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .download-link:hover { background: #dbeafe; }
+        .extract-code { margin-top: 12px; font-size: 14px; color: #666; }
+        .extract-code span {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 6px 16px;
+            border-radius: 6px;
+            color: #d97706;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        footer { 
+            text-align: center; 
+            padding: 40px 20px; 
+            color: rgba(255,255,255,0.8); 
+            font-size: 13px; 
+        }
+        footer a { color: #fff; }
+        @media (max-width: 600px) {
+            .paper-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .download-btn { width: 100%; text-align: center; }
+            header h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>一模二模资源</h1>
+            <p>精选历年真题与一模二模试卷，助力中考备考</p>
+            <div class="tip">扫码支付 ¥9.9 即可下载</div>
+        </header>
+        
+        <!-- 中考真题 -->
+        <div class="section">
+            <div class="section-title">中考真题 <span>6份</span></div>
+            <div class="paper-list">
+                <div class="paper-item">
+                    <span class="paper-name">2025上海中考试卷及答案</span>
+                    <button class="download-btn" onclick="openModal('2025上海中考试卷及答案', 'https://pan.baidu.com/s/1W_ATamunuvWK0vU0Vw-NFg', 'tjfp')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">数学中考真题</span>
+                    <button class="download-btn" onclick="openModal('数学中考真题', 'https://pan.baidu.com/s/14uMBXbUR7zR0LR_z2ykXeA', 't8w8')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">语文中考真题</span>
+                    <button class="download-btn" onclick="openModal('语文中考真题', 'https://pan.baidu.com/s/1xsQVRBeBaakbKktHbbS8ew', '8ia5')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">英语中考真题</span>
+                    <button class="download-btn" onclick="openModal('英语中考真题', 'https://pan.baidu.com/s/1tvO5FH43yH-EpxjvCIBCIQ', 'wvf4')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">中考物理真题</span>
+                    <button class="download-btn" onclick="openModal('中考物理真题', 'https://pan.baidu.com/s/11IO26w14HC4_50gMrC3ivw', 'dbrr')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">中考化学真题</span>
+                    <button class="download-btn" onclick="openModal('中考化学真题', 'https://pan.baidu.com/s/1axuQwB6G-18YdIxz6ns7iw', 'j57r')">下载</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2026一模 -->
+        <div class="section">
+            <div class="section-title">2026届一模 <span>3份</span></div>
+            <div class="paper-list">
+                <div class="paper-item">
+                    <span class="paper-name">2026上海初三一模 <small>综合</small></span>
+                    <button class="download-btn" onclick="openModal('2026上海初三一模', 'https://pan.baidu.com/s/1e2h-Bg49mhuKsY9OoQqqAw', '62sf')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2026杨浦一模</span>
+                    <button class="download-btn" onclick="openModal('2026杨浦一模', 'https://pan.baidu.com/s/1yrcYabKGmM2ZvlxV3xVXLA', '93is')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2026松江一模</span>
+                    <button class="download-btn" onclick="openModal('2026松江一模', 'https://pan.baidu.com/s/12oFLkkjs5QbcGYPsFOgJPw', '6jdy')">下载</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2025一模 -->
+        <div class="section">
+            <div class="section-title">2025届一模 <span>7份</span></div>
+            <div class="paper-list">
+                <div class="paper-item">
+                    <span class="paper-name">2025数学一模 <small>16区汇总</small></span>
+                    <button class="download-btn" onclick="openModal('2025数学一模', 'https://pan.baidu.com/s/1dGs-NrFrRSuRtX5w8J9Lug', 'j435')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2025语文一模</span>
+                    <button class="download-btn" onclick="openModal('2025语文一模', 'https://pan.baidu.com/s/1RgpL7Q1B6FGXNu84jS8YdA', 'n2su')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2025英语一模 <small>16区汇总</small></span>
+                    <button class="download-btn" onclick="openModal('2025英语一模', 'https://pan.baidu.com/s/1a8SWFkA7_MpVzQsuculHoQ', 'cy5p')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2025物理一模</span>
+                    <button class="download-btn" onclick="openModal('2025物理一模', 'https://pan.baidu.com/s/1XXG-Ww0joenC5UOgfxX_yQ', 'yf13')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2025化学一模 <small>16区汇总</small></span>
+                    <button class="download-btn" onclick="openModal('2025化学一模', 'https://pan.baidu.com/s/1KfIfyCTDRVtZip0oV3OJEw', 'qxiy')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2025道法一模</span>
+                    <button class="download-btn" onclick="openModal('2025道法一模', 'https://pan.baidu.com/s/1G8j5UEUAJR01iUKt9yy1kA', 'jf77')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2025跨学科一模</span>
+                    <button class="download-btn" onclick="openModal('2025跨学科一模', 'https://pan.baidu.com/s/1W3N7UER1AiRwz7DXhop8LA', 'n1yi')">下载</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2024一模 -->
+        <div class="section">
+            <div class="section-title">2024届一模 <span>4份</span></div>
+            <div class="paper-list">
+                <div class="paper-item">
+                    <span class="paper-name">2024数学一模</span>
+                    <button class="download-btn" onclick="openModal('2024数学一模', 'https://pan.baidu.com/s/1DPedprzPzr6c1mo_q8UCMg', 'vnwm')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2024英语一模</span>
+                    <button class="download-btn" onclick="openModal('2024英语一模', 'https://pan.baidu.com/s/1tylIyYbOAhNsX0bLUYwLtA', '5dsi')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2024物理一模</span>
+                    <button class="download-btn" onclick="openModal('2024物理一模', 'https://pan.baidu.com/s/1ZsIB5JHoAdtOxpGbZRn7Zg', 'q6pi')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2024化学一模</span>
+                    <button class="download-btn" onclick="openModal('2024化学一模', 'https://pan.baidu.com/s/1wJI7cHJjNM_C4qpawHQtCQ', '4ec2')">下载</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2023一模 -->
+        <div class="section">
+            <div class="section-title">2023届一模 <span>3份</span></div>
+            <div class="paper-list">
+                <div class="paper-item">
+                    <span class="paper-name">2023数学一模</span>
+                    <button class="download-btn" onclick="openModal('2023数学一模', 'https://pan.baidu.com/s/1nmcR_SAnbACm_GgUydJzNQ', '2uey')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2023物理一模</span>
+                    <button class="download-btn" onclick="openModal('2023物理一模', 'https://pan.baidu.com/s/116dCszTK7kgpbP1xc7t-mA', 'ug8y')">下载</button>
+                </div>
+                <div class="paper-item">
+                    <span class="paper-name">2023化学一模</span>
+                    <button class="download-btn" onclick="openModal('2023化学一模', 'https://pan.baidu.com/s/10iAfBd65Pvw0LKAUuidbEQ', 'bf7c')">下载</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            付款后即可获取下载链接 | 有问题联系客服<br>
+            <a href="mailto:zhangkewangqi1@163.com">zhangkewangqi1@163.com</a>
+        </footer>
+    </div>
+    
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modalTitle">下载资料</h2>
+            <div class="modal-price">¥9.9 <span>/ 份</span></div>
+            <div class="qrcode-section">
+                <div class="qrcode-tabs">
+                    <button class="qrcode-tab active" onclick="switchPay(0)">微信支付</button>
+                    <button class="qrcode-tab" onclick="switchPay(1)">支付宝</button>
+                </div>
+                <div class="qrcode-img">
+                    <div id="wechat-qr">
+                        <img src="https://via.placeholder.com/200x200/07c160/fff?text=微信收款码" alt="微信收款码">
+                    </div>
+                    <div id="alipay-qr" style="display:none;">
+                        <img src="https://via.placeholder.com/200x200/1677ff/fff?text=支付宝收款码" alt="支付宝收款码">
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">扫码支付后，点击下方按钮获取链接</p>
+            <button class="paid-btn" onclick="showDownload()">我已付款</button>
+            <div class="download-section" id="downloadSection">
+                <a class="download-link" id="downloadLink" href="#" target="_blank">点击下载</a>
+                <p class="extract-code">提取码：<span id="extractCode">xxxx</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentPaper = { name: '', link: '', code: '' };
+        
+        function openModal(name, link, code) {
+            currentPaper = { name, link, code };
+            document.getElementById('modalTitle').textContent = '下载：' + name;
+            document.getElementById('downloadSection').classList.remove('active');
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+        
+        function switchPay(type) {
+            document.querySelectorAll('.qrcode-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === type);
+            });
+            document.getElementById('wechat-qr').style.display = type === 0 ? 'block' : 'none';
+            document.getElementById('alipay-qr').style.display = type === 1 ? 'block' : 'none';
+        }
+        
+        function showDownload() {
+            document.getElementById('downloadLink').href = currentPaper.link;
+            document.getElementById('downloadLink').textContent = currentPaper.link;
+            document.getElementById('extractCode').textContent = currentPaper.code;
+            document.getElementById('downloadSection').classList.add('active');
+        }
+        
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
